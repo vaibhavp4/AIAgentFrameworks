@@ -23,15 +23,56 @@ def vertex_chat(prompt):
 
 print(vertex_chat("What is the capital of France?"))
 
+import os
+from autogen import get_config_list
+from autogen.agentchat.contrib.gpt_assistant_agent import GPTAssistantAgent
+from autogen import UserProxyAgent
+
+
+api_key = os.environ['OPENAI_API_KEY']
+
+config_list = get_config_list(
+    [api_key]
+)
+
+# creates new assistant using Assistant API
+gpt_assistant = GPTAssistantAgent(
+    name="assistant",
+    llm_config={
+        "config_list": config_list,
+        "assistant_id": None
+    })
+
+user_proxy = UserProxyAgent(name="user_proxy",
+    code_execution_config={
+        "work_dir": "coding"
+    },
+    human_input_mode="NEVER")
+
+user_proxy.initiate_chat(gpt_assistant, message="Print hello world")
 '''
 
-from autogen import AssistantAgent, UserProxyAgent, config_list_from_json
-import os
+import asyncio
+from metagpt.roles import (Architect, Engineer, ProductManager, ProjectManager)
+from metagpt.team import Team
 
-# Load LLM inference endpoints from an env variable or a file
-# See https://microsoft.github.io/autogen/docs/FAQ#set-your-api-endpoints
-# and OAI_CONFIG_LIST_sample.json
-config_list = config_list_from_json(env_or_file=os.environ["OAI_CONFIG_LIST"])
-assistant = AssistantAgent("assistant", llm_config={"config_list": config_list})
-user_proxy = UserProxyAgent("user_proxy", code_execution_config={"work_dir": "coding"})
-user_proxy.initiate_chat(assistant, message="Plot a chart of NVDA and TESLA stock price change YTD.")
+async def startup(idea: str):
+  company = Team()
+  company.hire(
+      [
+          ProductManager(),
+          Architect(),
+          ProjectManager(),
+          Engineer(),
+      ]
+  )
+  company.invest(investment=3.0)
+  company.run_project(idea=idea)
+  await company.run(n_round=5)
+
+async def main():
+  history = await startup(idea="create a single page website to display live data from a google sheet")
+  print(history)
+# Run the main function using asyncio.run() if the script is the main program
+if __name__ == "__main__":
+  asyncio.run(main())

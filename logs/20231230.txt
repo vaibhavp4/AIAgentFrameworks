@@ -1,0 +1,4 @@
+2023-12-30 23:56:42.930 | DEBUG    | metagpt.config:__init__:50 - Config loading done.
+2023-12-30 23:56:42.931 | DEBUG    | metagpt.config:_ensure_workspace_exists:125 - WORKSPACE_PATH set to /home/runner/AIAgentFrameworks/workspace
+2023-12-30 23:59:28.261 | DEBUG    | metagpt.config:__init__:50 - Config loading done.
+2023-12-30 23:59:28.262 | DEBUG    | metagpt.config:_ensure_workspace_exists:125 - WORKSPACE_PATH set to /home/runner/AIAgentFrameworks/workspace
