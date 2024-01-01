@@ -56,23 +56,44 @@ import asyncio
 from metagpt.roles import (Architect, Engineer, ProductManager, ProjectManager)
 from metagpt.team import Team
 
+
 async def startup(idea: str):
   company = Team()
-  company.hire(
-      [
-          ProductManager(),
-          Architect(),
-          ProjectManager(),
-          Engineer(),
-      ]
-  )
+  company.hire([
+      ProductManager(),
+      Architect(),
+      ProjectManager(),
+      Engineer(),
+  ])
   company.invest(investment=3.0)
   company.run_project(idea=idea)
   await company.run(n_round=5)
 
+
 async def main():
-  history = await startup(idea="create a single page website to display live data from a google sheet")
+  history = await startup(
+      idea=
+      "create a single page website to display live data from a google sheet")
   print(history)
+
+
 # Run the main function using asyncio.run() if the script is the main program
 if __name__ == "__main__":
   asyncio.run(main())
+'''
+import asyncio
+
+from metagpt.roles.researcher import Researcher
+from metagpt.logs import logger
+
+
+async def main():
+  msg = "Research about trending skills in the job market"
+  role = Researcher()
+  result = await role.run(msg)
+  logger.info(result.content[:100])
+
+
+if __name__ == '__main__':
+  asyncio.run(main())
+'''
